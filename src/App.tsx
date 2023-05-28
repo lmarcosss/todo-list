@@ -1,33 +1,47 @@
+import './global.css'
+import { v4 as uuidv4 } from 'uuid'
+import { Header, TaskList, CreateTaskForm } from './components'
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
+import styles from './App.module.css'
+
+const tasksDB = [
+  {
+    id: uuidv4(),
+    title: 'Terminar o desafio',
+    isCompleted: false,
+  },
+  {
+    id: uuidv4(),
+    title: 'Estudar TypeScript',
+    isCompleted: false,
+  },
+  {
+    id: uuidv4(),
+    title: 'Estudar Javascript',
+    isCompleted: true,
+  }
+]
+
+export interface TaskType {
+  id: string;
+  title: string;
+  isCompleted: boolean;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [tasks, setTasks] = useState<TaskType[]>(tasksDB)
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <Header />
+      <div className={styles.wrapper}>
+        <CreateTaskForm setTasks={setTasks} />
+        <TaskList
+          tasks={tasks}
+          setTasks={setTasks}
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
